@@ -26,7 +26,7 @@ public class TicTacToe {
 			// Определение текущего игрока
 			String player = PLAYERS[playerIndex % PLAYERS.length];
 
-			// Получаем ход от пользователя
+			// Получаем ход от игрока
 			int[] m;
 			while (true) {
 				System.out.print("\nХодит (" + player + "): ");
