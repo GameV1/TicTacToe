@@ -108,39 +108,50 @@ public class TicTacToe {
 	}
 
 	private static boolean isWin(String[][] map, String player, int iIn, int jIn) {
-		int winLineLength = Math.max(3, Math.min(WIN_LINE_LENGTH, 9));
 		int height = map.length;
 		int width = map[0].length;
 
+		int maxWinLineLength = Math.min(width, height);
+		int winLineLength = Math.max(3, Math.min(WIN_LINE_LENGTH, 9));
+		winLineLength = Math.min(maxWinLineLength, winLineLength);
+
 		// Проверка по вертикали
 		boolean flag = true;
-		for (int i = 0; i < Math.min(height, winLineLength); i++) {
-			flag &= map[i][jIn] == player;
+		for (int h = 0; h < winLineLength; h++) {
+			flag &= map[h][jIn] == player;
 		}
 		if (flag) return true;
 
 		// Проверка по горизонтали
 		flag = true;
-		for (int j = 0; j < Math.min(width, winLineLength); j++) {
-			flag &= map[iIn][j] == player;
+		for (int w = 0; w < winLineLength; w++) {
+			flag &= map[iIn][w] == player;
 		}
 		if (flag) return true;
 
 		// Проверка по диагонали справа налево
-		flag = true;
-		for (int d = 0; d < Math.min((width + height) / 2, winLineLength); d++) {
-			flag &= map[d][d] == player;
+		int count = 0;
+		for (int d = -winLineLength + 1; d < winLineLength; d++) {
+			int h = iIn + d;
+			int w = jIn + d;
+			if (h >= 0 && w >= 0 && h < height && w < width) {
+				if (map[h][w] == player) {
+					if (++count >= winLineLength) return true;
+				}
+			}
 		}
-		if (flag) return true;
 
 		// Проверка по диагонали слева направо
-		flag = true;
-		int startD = Math.min((width + height) / 2, winLineLength) - 1;
-		for (int d = startD; d >= 0; d--) {
-			int d1 = startD - d;
-			flag &= map[d1][d] == player;
+		count = 0;
+		for (int d = -winLineLength + 1; d < winLineLength; d++) {
+			int h = iIn + d;
+			int w = jIn - d;
+			if (h >= 0 && w >= 0 && h < height && w < width) {
+				if (map[h][w] == player) {
+					if (++count >= winLineLength) return true;
+				}
+			}
 		}
-		if (flag) return true;
 
 		return false;
 	}
